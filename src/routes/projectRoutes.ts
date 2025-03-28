@@ -3,7 +3,7 @@ import { body, param } from "express-validator";
 import { ProjectController } from "../controllers/ProjectController";
 import { TaskController } from "../controllers/TaskController";
 import { handleInputErrors } from "../middleware/validation";
-
+import { validateProjectExists } from "../middleware/project";
 const router = Router();
 
 router.post(
@@ -44,7 +44,7 @@ router.delete(
 /** Routes for Tasks */
 router.post(
   "/:projectId/tasks",
-  param("projectId").isMongoId().withMessage("Invalid Project ID"),
+  validateProjectExists,
   body("name").notEmpty().withMessage("Task Name is required"),
   body("description").notEmpty().withMessage("Description is required"),
   handleInputErrors,
